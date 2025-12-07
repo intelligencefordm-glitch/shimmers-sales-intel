@@ -1,13 +1,11 @@
+import Sidebar from "./components/Sidebar";
+
 export const metadata = {
   title: "Shimmers Sales Intelligence",
   description: "Sales dashboard for Shimmers Club & Restaurant",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body
@@ -15,10 +13,14 @@ export default function RootLayout({
           margin: 0,
           padding: 0,
           fontFamily: "Inter, sans-serif",
-          background: "#f5f6fa",
+          display: "flex",
         }}
       >
-        {children}
+        <Sidebar />
+
+        <div style={{ marginLeft: "220px", width: "100%" }}>
+          {children}
+        </div>
       </body>
     </html>
   );
