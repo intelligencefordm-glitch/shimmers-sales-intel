@@ -1,38 +1,177 @@
-import React from 'react'
+"use client";
+
+import React, { useEffect, useState } from "react";
 
 export default function HomePage() {
+  const [events, setEvents] = useState([]);
+
+  // Fetch event suggestions from API
+  useEffect(() => {
+    fetch("/api/events/suggest")
+      .then((r) => r.json())
+      .then((d) => setEvents(d.suggestions || []));
+  }, []);
+
   return (
-    <div style={{fontFamily: 'Inter, sans-serif', padding: 24, background: '#f7f7fb', minHeight: '100vh'}}>
-      <header style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20}}>
-        <h1 style={{fontSize: 22}}>Shimmers — Sales Intelligence (Demo)</h1>
-        <div>Owner: Darsh</div>
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "#f5f6fa",
+        padding: "24px",
+        fontFamily: "Inter, sans-serif",
+      }}
+    >
+      {/* Header */}
+      <header
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "24px",
+        }}
+      >
+        <h1 style={{ fontSize: "24px", fontWeight: 600 }}>
+          Shimmers — Sales Intelligence Dashboard
+        </h1>
+        <div style={{ fontSize: "14px", opacity: 0.7 }}>Owner: Darsh</div>
       </header>
 
-      <section style={{display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 16}}>
-        <div style={{background: 'white', padding: 16, borderRadius: 8}}>
-          <h2 style={{marginBottom: 8}}>Revenue (mock)</h2>
-          <div style={{height: 220, background: '#eef2ff', borderRadius: 6, display:'flex', alignItems:'center', justifyContent:'center'}}>Chart placeholder</div>
+      {/* KPI SECTION */}
+      <section
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: "16px",
+          marginBottom: "24px",
+        }}
+      >
+        {/* KPI Card */}
+        <div
+          style={{
+            background: "#fff",
+            padding: "16px",
+            borderRadius: "12px",
+            boxShadow: "0 2px 6px rgba(0,0,0,0.06)",
+          }}
+        >
+          <h3 style={{ fontSize: "14px", opacity: 0.6 }}>Weekly Club Revenue</h3>
+          <p style={{ fontSize: "22px", fontWeight: 600 }}>₹1,24,000</p>
         </div>
-        <div style={{background: 'white', padding: 16, borderRadius: 8}}>
-          <h3>KPIs</h3>
-          <ul>
-            <li>Weekly club revenue: ₹1,24,000</li>
-            <li>Avg spend per cover: ₹2200</li>
-            <li>VIP visits this week: 18</li>
-          </ul>
+
+        <div
+          style={{
+            background: "#fff",
+            padding: "16px",
+            borderRadius: "12px",
+            boxShadow: "0 2px 6px rgba(0,0,0,0.06)",
+          }}
+        >
+          <h3 style={{ fontSize: "14px", opacity: 0.6 }}>
+            Average Spend Per Guest
+          </h3>
+          <p style={{ fontSize: "22px", fontWeight: 600 }}>₹2,200</p>
+        </div>
+
+        <div
+          style={{
+            background: "#fff",
+            padding: "16px",
+            borderRadius: "12px",
+            boxShadow: "0 2px 6px rgba(0,0,0,0.06)",
+          }}
+        >
+          <h3 style={{ fontSize: "14px", opacity: 0.6 }}>VIP Visits This Week</h3>
+          <p style={{ fontSize: "22px", fontWeight: 600 }}>18</p>
         </div>
       </section>
 
-      <section style={{display:'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginTop: 16}}>
-        <div style={{background:'white', padding:16, borderRadius:8}}>
-          <h3>Event Suggestions</h3>
-          <div id="events-root">Use /api/events/suggest to fetch ideas.</div>
+      {/* SECOND ROW — CHART + EVENT SUGGESTIONS */}
+      <section
+        style={{
+          display: "grid",
+          gridTemplateColumns: "2fr 1fr",
+          gap: "16px",
+        }}
+      >
+        {/* Revenue Chart Placeholder */}
+        <div
+          style={{
+            background: "#fff",
+            padding: "16px",
+            borderRadius: "12px",
+            minHeight: "260px",
+            boxShadow: "0 2px 6px rgba(0,0,0,0.06)",
+          }}
+        >
+          <h3 style={{ fontWeight: 600, marginBottom: "8px" }}>
+            Revenue Overview (Mock Data)
+          </h3>
+          <div
+            style={{
+              background: "#eef2ff",
+              height: "200px",
+              borderRadius: "8px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              color: "#4b5ce7",
+            }}
+          >
+            Chart Placeholder
+          </div>
         </div>
-        <div style={{background:'white', padding:16, borderRadius:8}}>
-          <h3>Upload Data</h3>
-          <p>Use the API endpoint /api/upload to POST CSV files (not implemented in demo).</p>
+
+        {/* Event Suggestions */}
+        <div
+          style={{
+            background: "#fff",
+            padding: "16px",
+            borderRadius: "12px",
+            minHeight: "260px",
+            boxShadow: "0 2px 6px rgba(0,0,0,0.06)",
+          }}
+        >
+          <h3 style={{ fontWeight: 600, marginBottom: "8px" }}>
+            Instagrammable Event Ideas
+          </h3>
+
+          {events.length === 0 && (
+            <p style={{ fontSize: "14px", opacity: 0.6 }}>Loading…</p>
+          )}
+
+          <div style={{ display: "grid", gap: "10px", marginTop: "10px" }}>
+            {events.map((e, i) => (
+              <div
+                key={i}
+                style={{
+                  background: "#fafafa",
+                  borderRadius: "10px",
+                  padding: "12px",
+                  border: "1px solid #eee",
+                }}
+              >
+                <div style={{ fontWeight: 600 }}>{e.title}</div>
+                <div style={{ fontSize: "13px", marginTop: "4px" }}>
+                  {e.hook}
+                </div>
+                <div
+                  style={{
+                    fontSize: "13px",
+                    fontWeight: 600,
+                    marginTop: "6px",
+                    color: "#4b5ce7",
+                  }}
+                >
+                  IG Hook: {e.instagramHook}
+                </div>
+                <div style={{ fontSize: "13px", marginTop: "4px" }}>
+                  Budget: ₹{e.estCost}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
     </div>
-  )
+  );
 }
