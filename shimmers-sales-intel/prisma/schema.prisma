@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Customer {
+  id            String   @id @default(uuid())
+  externalId    String?  @unique
+  name          String?
+  phone         String?  @unique
+  email         String?
+  dob           DateTime?
+  firstVisit    DateTime?
+  lastVisit     DateTime?
+  lifetimeSpend Float    @default(0)
+  tags          String?
+  transactions  Transaction[]
+}
+
+model Transaction {
+  id           String   @id @default(uuid())
+  externalBill String?  @unique
+  date         DateTime
+  outlet       String
+  billAmount   Float
+  alcoholAmount Float   @default(0)
+  foodAmount   Float   @default(0)
+  numGuests    Int?
+  paymentType  String?
+  promoCode    String?
+  serverId     String?
+  customer     Customer? @relation(fields: [customerId], references: [id])
+  customerId   String?
+}
+
+model Reservation {
+  id          String   @id @default(uuid())
+  date        DateTime
+  time        String?
+  customerId  String?
+  numGuests   Int?
+  channel     String?
+  status      String?
+  deposit     Float?
+}
+
+model Campaign {
+  id         String @id @default(uuid())
+  name       String
+  channel    String
+  startDate  DateTime
+  endDate    DateTime?
+  budget     Float?
+  metadata   Json?
+}
