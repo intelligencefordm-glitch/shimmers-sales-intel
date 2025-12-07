@@ -8,7 +8,7 @@
     "start": "next start",
     "mock": "ts-node scripts/mock_data.ts",
     "rfm": "ts-node lib/analytics.ts"
-  {
+  },
   "dependencies": {
     "next": "14.0.0",
     "react": "18.2.0",
