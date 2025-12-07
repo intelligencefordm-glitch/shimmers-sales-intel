@@ -2,14 +2,26 @@
 
 import React, { useEffect, useState } from "react";
 
-export default function HomePage() {
-  const [events, setEvents] = useState([]);
+type EventSuggestion = {
+  title: string;
+  hook: string;
+  instagramHook: string;
+  target: string;
+  estCost: number;
+};
 
-  // Fetch event suggestions from API
+export default function HomePage() {
+  const [events, setEvents] = useState<EventSuggestion[]>([]);
+
   useEffect(() => {
     fetch("/api/events/suggest")
       .then((r) => r.json())
-      .then((d) => setEvents(d.suggestions || []));
+      .then((d) => {
+        setEvents(d.suggestions || []);
+      })
+      .catch(() => {
+        setEvents([]);
+      });
   }, []);
 
   return (
@@ -45,7 +57,6 @@ export default function HomePage() {
           marginBottom: "24px",
         }}
       >
-        {/* KPI Card */}
         <div
           style={{
             background: "#fff",
@@ -85,7 +96,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* SECOND ROW — CHART + EVENT SUGGESTIONS */}
+      {/* SECOND ROW */}
       <section
         style={{
           display: "grid",
@@ -151,9 +162,11 @@ export default function HomePage() {
                 }}
               >
                 <div style={{ fontWeight: 600 }}>{e.title}</div>
+
                 <div style={{ fontSize: "13px", marginTop: "4px" }}>
                   {e.hook}
                 </div>
+
                 <div
                   style={{
                     fontSize: "13px",
@@ -164,6 +177,7 @@ export default function HomePage() {
                 >
                   IG Hook: {e.instagramHook}
                 </div>
+
                 <div style={{ fontSize: "13px", marginTop: "4px" }}>
                   Budget: ₹{e.estCost}
                 </div>
