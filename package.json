@@ -8,7 +8,7 @@
     "start": "next start",
     "mock": "ts-node scripts/mock_data.ts",
     "rfm": "ts-node lib/analytics.ts"
-  },
+  {
   "dependencies": {
     "next": "14.0.0",
     "react": "18.2.0",
@@ -19,7 +19,9 @@
     "@prisma/client": "^5.15.0"
   },
   "devDependencies": {
+    "typescript": "^5.6.2",
     "ts-node": "^10.9.1",
-    "typescript": "^5.6.2"
+    "@types/react": "^18.2.0",
+    "@types/node": "^20.0.0"
   }
 }
